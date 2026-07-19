@@ -3,7 +3,6 @@ package handlers
 import (
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -45,7 +44,7 @@ func HandleUpload(w http.ResponseWriter, r *http.Request) {
 	resultStr := service.IsParseable(string(fileBytes))
 
 	ext := filepath.Ext(header.Filename)
-	nameTime := time.Now().UTC().Format("20060102-150405")
+	nameTime := time.Now().UTC().String()
 	fileLocal, err := os.Create(nameTime + ext)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -55,7 +54,8 @@ func HandleUpload(w http.ResponseWriter, r *http.Request) {
 
 	_, err = fileLocal.WriteString(resultStr)
 	if err != nil {
-		log.Fatalf("Ошибка при записи в файл: %v", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 	fmt.Println(resultStr)
 	return

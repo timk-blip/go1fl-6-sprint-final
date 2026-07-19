@@ -33,8 +33,8 @@ func TestIsParseable1(t *testing.T) {
 		},
 		{
 			name: "TestIsParseableText",
-			args: args{"привет привет"},
-			want: ".--. .-. .. .-- . - .--. .-. .. .-- . -",
+			args: args{"ЙУЕШНОЯЛБИЯДГЛУЦИБЖЭАХЯЗ"},
+			want: ".--- ..- . ---- -. --- .-.- .-.. -... .. .-.- -.. --. .-.. ..- -.-. .. -... ...- ..-.. .- .... .-.- --..",
 		},
 		{
 			name: "TestIsParseableTextErr",
