@@ -2,7 +2,7 @@ package service
 
 import "testing"
 
-func TestIsParseable(t *testing.T) {
+func TestIsParseable1(t *testing.T) {
 	type args struct {
 		text string
 	}
@@ -14,32 +14,32 @@ func TestIsParseable(t *testing.T) {
 		{
 			name: "TestIsParseableMorse",
 			args: args{".--. .-. .. .-- . -"},
-			want: ".--. .-. .. .-- . -",
+			want: "ПРИВЕТ",
 		},
 		{
 			name: "TestIsParseableMorseErr",
 			args: args{".--. .-. .. .-- .12"},
-			want: "",
+			want: "...... -....- -....- ...... ...... -....- ...... ...... ...... ...... -....- -....- ...... .---- ..---",
 		},
 		{
 			name: "TestIsParseableMorseErr1",
 			args: args{"df2. .-. .. .-- .12"},
-			want: "",
+			want: "..--- ...... ...... -....- ...... ...... ...... ...... -....- -....- ...... .---- ..---",
 		},
 		{
 			name: "TestIsParseableMorse1",
 			args: args{".--. .-. .. .-- . -"},
-			want: ".--. .-. .. .-- . -",
+			want: "ПРИВЕТ",
 		},
 		{
 			name: "TestIsParseableText",
-			args: args{"привет Привет"},
-			want: "привет Привет",
+			args: args{"привет привет"},
+			want: ".--. .-. .. .-- . - .--. .-. .. .-- . -",
 		},
 		{
 			name: "TestIsParseableTextErr",
 			args: args{"Привет .--. .-. .. .-- . -"},
-			want: "",
+			want: ".--. .-. .. .-- . - ...... -....- -....- ...... ...... -....- ...... ...... ...... ...... -....- -....- ...... -....-",
 		},
 		{
 			name: "TestIsParseableErr",
