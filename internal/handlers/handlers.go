@@ -58,5 +58,13 @@ func HandleUpload(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Println(resultStr)
+	_, err = w.Write(fileBytes)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+
 	return
 }
