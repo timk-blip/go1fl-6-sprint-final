@@ -12,7 +12,7 @@ import (
 )
 
 func HandleIndex(w http.ResponseWriter, r *http.Request) {
-	path := "/Users/kvako/GolandProjects/go1fl-6-sprint-final/index.html"
+	path := "index.html"
 	http.ServeFile(w, r, path)
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		http.Error(w, "Файл не найден", http.StatusNotFound)
@@ -58,7 +58,7 @@ func HandleUpload(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Println(resultStr)
-	_, err = w.Write(fileBytes)
+	_, err = w.Write([]byte(resultStr))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
