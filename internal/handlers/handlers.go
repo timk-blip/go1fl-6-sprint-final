@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -10,6 +10,15 @@ import (
 
 	"github.com/Yandex-Practicum/go1fl-sprint6-final/internal/service"
 )
+
+type LoggerInfo struct {
+	*log.Logger
+}
+
+func (l *LoggerInfo) Info(v ...interface{}) {
+	args := append([]interface{}{"[INFO]"}, v...)
+	l.Println(args...)
+}
 
 func HandleIndex(w http.ResponseWriter, r *http.Request) {
 	path := "index.html"
@@ -24,6 +33,10 @@ func HandleIndex(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandleUpload(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "только POST.", http.StatusMethodNotAllowed)
+		return
+	}
 	err := r.ParseMultipartForm(10 << 20)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -57,14 +70,15 @@ func HandleUpload(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	fmt.Println(resultStr)
+	baseLogger := log.New(os.Stdout, "", log.LstdFlags)
+	logM := LoggerInfo{Logger: baseLogger}
+	logM.Info("Строку ", "\">", string(fileBytes), "\"<", "конвертировали в ", resultStr)
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
 	_, err = w.Write([]byte(resultStr))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-	w.WriteHeader(http.StatusOK)
-
 	return
 }

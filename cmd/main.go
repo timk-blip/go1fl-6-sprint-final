@@ -10,9 +10,9 @@ import (
 
 func main() {
 	logger := log.New(os.Stdout, "[SERVER]", log.LstdFlags|log.Lmicroseconds|log.Lshortfile)
-	srv := server.NewServer(logger)
-	srv.Logger.Println("Сервер запущен на порту :8080...")
-	if err := srv.Server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+	Srv := server.NewServer(logger)
+	Srv.Logger.Println("Сервер запущен на порту :8080...")
+	if err := Srv.Server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		logger.Fatal(err)
 	}
 }

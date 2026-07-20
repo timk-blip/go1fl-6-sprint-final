@@ -1,6 +1,10 @@
 package service
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 func TestIsParseable1(t *testing.T) {
 	type args struct {
@@ -19,12 +23,12 @@ func TestIsParseable1(t *testing.T) {
 		{
 			name: "TestIsParseableMorseErr",
 			args: args{".--. .-. .. .-- .12"},
-			want: "...... -....- -....- ...... ...... -....- ...... ...... ...... ...... -....- -....- ...... .---- ..---",
+			want: "",
 		},
 		{
 			name: "TestIsParseableMorseErr1",
 			args: args{"df2. .-. .. .-- .12"},
-			want: "..--- ...... ...... -....- ...... ...... ...... ...... -....- -....- ...... .---- ..---",
+			want: "",
 		},
 		{
 			name: "TestIsParseableMorse1",
@@ -34,12 +38,12 @@ func TestIsParseable1(t *testing.T) {
 		{
 			name: "TestIsParseableText",
 			args: args{"НХТТГНЩЧКОФВЙЭМПХБСЭПАЩ"},
-			want: ".--- ..- . ---- -. --- .-.- .-.. -... .. .-.- -.. --. .-.. ..- -.-. .. -... ...- ..-.. .- .... .-.- --..",
+			want: "-. .... - - --. -. --.- ---. -.- --- ..-. .-- .--- ..-.. -- .--. .... -... ... ..-.. .--. .- --.-",
 		},
 		{
 			name: "TestIsParseableTextErr",
 			args: args{"Привет .--. .-. .. .-- . -"},
-			want: ".--. .-. .. .-- . - ...... -....- -....- ...... ...... -....- ...... ...... ...... ...... -....- -....- ...... -....-",
+			want: "",
 		},
 		{
 			name: "TestIsParseableErr",
@@ -49,9 +53,8 @@ func TestIsParseable1(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := IsParseable(tt.args.text); got != tt.want {
-				t.Errorf("IsParseable() = %v, want %v", got, tt.want)
-			}
+			got := IsParseable(tt.args.text)
+			assert.Equal(t, tt.want, got, "Ошибка в тест-кейсе: %s", tt.name)
 		})
 	}
 }

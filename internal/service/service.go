@@ -9,9 +9,10 @@ import (
 
 func isMorse(text string) bool {
 	text = strings.TrimSpace(text)
-	re := regexp.MustCompile(`^[ .-]+$`)
-	if !re.MatchString(text) {
-		return false
+	for _, r := range text {
+		if r != ' ' && r != '.' && r != '-' {
+			return false
+		}
 	}
 	words := strings.Split(text, " / ")
 	if len(words) <= 0 {
@@ -32,11 +33,19 @@ func isMorse(text string) bool {
 }
 
 func isPlainText(text string) bool {
-	if len(text) < 2 {
-		return false
+	c := 0
+	if !isMorse(text) {
+		for _, r := range text {
+			if r == ' ' || r == '.' || r == '-' {
+				c++
+			}
+		}
+		if c >= len(text)/2 {
+			return false
+		}
+		return true
 	}
-	re := regexp.MustCompile(`[A-Za-zА-Яа-я0-9]`)
-	return re.MatchString(text)
+	return false
 }
 
 func IsParseable(text string) string {
