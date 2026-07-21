@@ -21,15 +21,8 @@ func (l *LoggerInfo) Info(v ...interface{}) {
 }
 
 func HandleIndex(w http.ResponseWriter, r *http.Request) {
-	path := "index.html"
-	http.ServeFile(w, r, path)
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		http.Error(w, "Файл не найден", http.StatusNotFound)
-		return
-	}
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	w.WriteHeader(http.StatusOK)
-	http.ServeFile(w, r, path)
+	http.ServeFile(w, r, "index.html")
+	return
 }
 
 func HandleUpload(w http.ResponseWriter, r *http.Request) {
@@ -77,7 +70,7 @@ func HandleUpload(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	_, err = w.Write([]byte(resultStr))
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		logM.Info("Ошибка записи в поток вывода http")
 		return
 	}
 	return
